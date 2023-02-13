@@ -59,3 +59,6 @@ export const getLogger = (c) => {
 		texty.text = txt;
 	};
 };
+
+export const wait = t => new Promise(a => setTimeout(a,t||0))
+//export const rand = (min, max) => min + (Math.random()*(max-min+1))
