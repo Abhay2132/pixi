@@ -15,6 +15,7 @@ export const config = {
 	resolution: 1,
 	autoDensity: true,
 	resizeTo: window,
+	backgroundAlpha : 0,
 };
 
 export function resize(cb) {
@@ -60,5 +61,26 @@ export const getLogger = (c) => {
 	};
 };
 
-export const wait = t => new Promise(a => setTimeout(a,t||0))
-//export const rand = (min, max) => min + (Math.random()*(max-min+1))
+export const wait = (t) => new Promise((a) => setTimeout(a, t || 0));
+export class Event {
+	#events = new Map();
+	constructor() {}
+	on(name, cb) {
+		this.#events.set(name, cb);
+		return this;
+	}
+	emit(name) {
+		let cb = this.#events.get(name);
+		if (cb) cb();
+		return this;
+	}
+	remove(name) {
+		if (this.#events.get(name)) this.#events.delete(name);
+		return this;
+	}
+}
+
+export const requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                            window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
+export const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;

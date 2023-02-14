@@ -5,3 +5,12 @@ body {
 .d-no {
 	display: none;
 }
+
+canvas {
+	background: #345521;
+}
+
+@keyframes day-night {
+	from { background: ; } 
+	to { background: lightgreen; } 
+}

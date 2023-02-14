@@ -1,20 +1,20 @@
 class Human {
 	constructor(opt) {
-		const { name = "Adam"} = opt || {};
+		const { name = "Adam" } = opt || {};
 		this.name = name;
 	}
-	
-	print(){
+
+	print() {
 		console.log(this.name);
 	}
 }
 
 class Student extends Human {
-	constructor(opt){
+	constructor(opt) {
 		super(opt);
-		this.name = "Mr. "+ this.name;
+		this.name = "Mr. " + this.name;
 	}
 }
 
-const Abhay = new Student ({name: "Abhay Bisht"})
-Abhay.print()
+const Abhay = new Student({ name: "Abhay Bisht" });
+Abhay.print();
