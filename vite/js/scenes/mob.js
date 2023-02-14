@@ -3,7 +3,7 @@ import {log, rand } from "../utilz.js";
 import { AnimatedSprite, Texture } from 'pixi.js';
 
 var mob_run = []
-for(let i=0; i<20;i++) mob_run.push(`/sprites/girl/Run (${i+1}).png`)
+for(let i=0; i<20;i++) mob_run.push(`sprites/girl/Run (${i+1}).png`)
 const textureArray = [];
 mob_run.forEach(texture => textureArray.push(Texture.from(texture)))
 
@@ -15,26 +15,24 @@ export default class Mob extends Ball {
 		this.isCollided = opt?.isCollided
 		this.onCollide = opt?.onCollide
 		this.setup()
-		
+		/*
 		let maxDist = Math.sqrt(this.maxX * this.maxX + this.maxY * this.maxY)
 		let time = maxDist / this.speed * 1000
-		
-		//log({maxDist, time})
-		setTimeout(() => this.kill(this), time);
+		setTimeout(() => this.kill(this), time);*/
 	}
 
 	animate(tick) {
-		/*
+		
 		if (
-			this.x < this.minX - 2 * this.r ||
-			this.x > this.maxX + 2 * this.r ||
-			this.y < this.minY - 2 * this.r ||
-			this.y > this.maxY + 2 * this.r
+			this.x < this.minX - 4 * this.r ||
+			this.x > this.maxX + 4 * this.r ||
+			this.y < this.minY - 4 * this.r ||
+			this.y > this.maxY + 4 * this.r
 		) {
 			log("Killed")
 			return this.kill(this);
 		}
-		*/
+		
 		
 		//log(this.x , this.y)
 		if (!(this.dx && this.y)) {

@@ -2,20 +2,9 @@ import { Event, log } from "../utilz";
 import Ball from "./ball.js";
 
 import { AnimatedSprite, Texture } from 'pixi.js';
+var player_run = []
+for(let i=0; i<8;i++) player_run.push(`sprites/run/Run (${i+1}).png`)
 
-var player_run = [
-	"Run (1).png",
-	"Run (2).png",
-	"Run (3).png",
-	"Run (4).png",
-	"Run (5).png",
-	"Run (6).png",
-	"Run (7).png",
-	"Run (8).png",
-]
-player_run = player_run.map((a) => "/sprites/run/"+a);
-
-log(player_run)
 const textureArray = [];
 player_run.forEach(texture => textureArray.push(Texture.from(texture)))
 
