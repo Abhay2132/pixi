@@ -36,11 +36,9 @@ export default class Scene extends Container {
 		if (s < ds) {
 			this.x = clamp(X, this.minX, this.maxX);
 			this.y = clamp(Y, this.minY, this.maxY);
-			
-			this.moving = false;
+			this.moving = !(parseInt(x) == parseInt(this.x) && parseInt(y) == parseInt(this.y))
 			return;
 		}
-		this.moving = true;
 		let a = Math.atan((y - Y) / (X - x)).toFixed(2);
 		if (!a) return;
 
@@ -49,6 +47,9 @@ export default class Scene extends Container {
 		if (!(dx && dy)) return;
 		this.x = clamp(this.x + dx, this.minX, this.maxX);
 		this.y = clamp(this.y + dy, this.minY, this.maxY);
+		
+		this.moving = !(parseInt(x) == parseInt(this.x) && parseInt(y) == parseInt(this.y))
+		//log("x : %i , this.x : %i , y : %i , this.y : %i",parseInt(x), parseInt(this.x), parseInt(y) , parseInt(this.y))
 	}
 	
 	setXYmm (opt) {

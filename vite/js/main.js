@@ -71,28 +71,32 @@ const getMobTimer = () => setInterval(() => {
 			return false;
 		},
 		onCollide(me){
-			gameOver()
-		},
+			gameOver();
+			},
 		loc : [ball.x, ball.y]
 	});
 	mobs.set(mob.uid, mob);
 	root.addChild(mob);
-}, 2000);
+}, 200);
 
 var mobTimer// = getMobTimer()
 
 function gameOver () {
 	pause = true;
 	clearInterval(mobTimer);
+	mobs.forEach(mob => {
+		//mob.speed = 0;
+		mob.p.stop()
+		mob.p.currentFrame = 0; 
+	});
 	setTimeout(startGame, 1000);
 }
 
 function startGame () {
-	score = 0
 	mobs.forEach(mob => mob.kill(mob));
 	pause = false;
 	mobTimer = getMobTimer();
-	
+	score = 0
 	ball.loc[0] = app.view.width / 2;
 	ball.loc[1] = app.view.height / 2;
 }

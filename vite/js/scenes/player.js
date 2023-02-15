@@ -12,13 +12,15 @@ export default class Player extends Ball {
 	constructor(opt) {
 		super(opt);
 		const p = new AnimatedSprite(textureArray);
-		p.height = 50
-		p.width = 50
+		p.anchor.set(0.5)
+		p.height = 70
+		p.width = 70
 		
 		//p.scale.x = -1
 		p.stop()
-		p.x = -30;
-		p.y = -25;
+		
+		p.x = -8;
+		//p.y = -30;
 		p.animationSpeed = 0.4;
 		this.addChild(p)
 		this.p = p;
@@ -34,5 +36,9 @@ export default class Player extends Ball {
 	idle () {
 		this.p.currentFrame = 0;
 		this.p.stop()
+	}
+	
+	pause () {
+		
 	}
 }

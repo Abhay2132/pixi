@@ -11,7 +11,6 @@ export default class Mob extends Ball {
 	constructor(opt) {
 		//opt.showShape = true
 		super(opt);
-		this.keepMoving = true;
 		this.isCollided = opt?.isCollided
 		this.onCollide = opt?.onCollide
 		this.setup()
@@ -22,7 +21,7 @@ export default class Mob extends Ball {
 	}
 
 	animate(tick) {
-		
+		//(this.moving ? this.p.play() : this.idle())
 		if (
 			this.x < this.minX - 4 * this.r ||
 			this.x > this.maxX + 4 * this.r ||
@@ -33,10 +32,8 @@ export default class Mob extends Ball {
 			return this.kill(this);
 		}
 		
-		
-		//log(this.x , this.y)
+		let { x, y } = this
 		if (!(this.dx && this.y)) {
-			let { x, y } = this
 			let [X, Y] = this.loc;
 			
 			const ds = this.speed * tick * 0.001;
@@ -49,8 +46,7 @@ export default class Mob extends Ball {
 		}
 		this.x += this.dx; //clamp(this.x + dx, this.minX, this.maxX);
 		this.y += this.dy; //clamp(this.y + dy, this.minY, this.maxY);
-		
-		if(this.isCollided(this)) this.onCollide()
+		if(this.isCollided(this)) this.onCollide(this)
 	}
 
 	static randPos(minX, maxX, minY, maxY) {
@@ -79,6 +75,11 @@ export default class Mob extends Ball {
 		p.animationSpeed = 0.6;
 		this.addChild(p)
 		this.p = p;
+	}
+	
+	idle () {
+		this.p.currentFrame = 0;
+		this.p.stop()
 	}
 }
 

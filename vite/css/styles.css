@@ -8,6 +8,8 @@ body {
 
 canvas {
 	background: #345521;
+	background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7QHwBeyk8LXmViRyAHTJBMB9WLvyvQVtX6A&usqp=CAU");
+	background-size: 10px;
 }
 
 @keyframes day-night {
