@@ -1,11 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Julee&display=swap');
 
-@font-face {
-	font-family: "scorefont";
-	src : url(fonts/Vintage.ttf) format('truetype');
-}
 * {
-	font-family: 'scorefont', 'Julee';
+	font-family: 'Julee';
 }
 
 body {
@@ -37,7 +33,7 @@ body {
 }
 
 .hud-panel , .hud-dialog {
-	transition: 400ms ease-out 200ms;
+	transition: 400ms ease-in-out 200ms;
 	--h : 400px;
 	height: var(--h);
 	width: 300px;
@@ -52,10 +48,12 @@ body {
 	--row : calc(var(--h) / 2);
 	display: grid !important;
 	grid-template-rows: auto auto;
+	opacity: 0;
 }
 
 #hud > *[state="active"] {
 	transform: scale(1);
+	opacity: 1;
 }
 
 .screen-logo {
@@ -147,4 +145,11 @@ body {
 	background: red;
 	color: #fff;
 	display: none;
+}
+
+#game-name {
+	position: absolute;
+	bottom: -10px;
+	margin: 0;
+	padding:0;
 }

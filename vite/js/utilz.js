@@ -1,6 +1,7 @@
 import { TextStyle, Text ,Assets } from "pixi.js";
 
 export const $ = (a) => document.querySelector(a);
+export const $$ = (a) => document.querySelectorAll(a);
 export const rand = (a, z) => Math.floor(Math.random() * (z - a+1) + a);
 
 const h = window.innerHeight;

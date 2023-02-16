@@ -6,9 +6,8 @@
     <title>Pixi.JS App</title>
     
     
-    
-    <script type="module" crossorigin src="assets/index-3a30b64c.js"></script>
-    <link rel="stylesheet" href="assets/index-a2d6a6c0.css">
+    <script type="module" crossorigin src="assets/index-77d5cc93.js"></script>
+    <link rel="stylesheet" href="assets/index-9c659e83.css">
   </head>
   <body>
 	<div id="game"></div>
@@ -16,6 +15,7 @@
 		<div id="start-screen" class="hud-panel" state = "active">
 			<div class="screen-logo">
 				<img src="sprites/run/Run (3).png" />
+				<h1 id="game-name">Sigma Boy</h1>
 			</div>
 			<div class ="screen-options">
 				<button id='play'>PLAY</button>
@@ -33,6 +33,17 @@
 				<button id='medium'>MEDIUM</button>
 				<button id='hard'>HARD</button>
 				<button id='asian'>ASIAN</button>
+			</div>
+		</div>
+		
+		<div id="over" class="hud-dialog"> 
+			<div class="screen-title">GAME OVER </div>
+			<div class="screen-logo">
+				<img src="imgs/dead.png" />
+			</div>
+			<div class ="screen-options">
+				<button id='restart'>RESTART</button>
+				<button id='home'>Home</button>
 			</div>
 		</div>
 	</div>

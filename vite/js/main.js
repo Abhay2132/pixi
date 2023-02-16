@@ -6,7 +6,7 @@ import {
 	Container,
 	Text,
 } from "pixi.js";
-import {$,inR, loadAssets, requestAnimationFrame, cancelAnimationFrame, wait, getLogger, config, log, clamp, resize, save, rand } from "./utilz.js";
+import {$,$$,inR, loadAssets, requestAnimationFrame, cancelAnimationFrame, wait, getLogger, config, log, clamp, resize, save, rand } from "./utilz.js";
 import assets from "./asset.js";
 var Player, Mob;
 
@@ -116,7 +116,7 @@ const mobSpawner = () => {
 
 var mobTimer// = getMobTimer()
 
-function gameOver (mob) {
+async function gameOver (mob) {
 	pause = true;
 	//clearInterval(mobTimer);
 	mobsOff = 0;
@@ -124,9 +124,13 @@ function gameOver (mob) {
 		mob.idle()
 	});
 	p.idle()
-	setTimeout(startGame, 1000);
+	//setTimeout(startGame, 1000);
+	setHud("#over")
+	hud.style.display = "block";
+	await wait(1000);
+	hud.style.opacity = 1;
 }
-
+const over = $("#over");
 function startGame () {
 		
 		if(!Mob) {
@@ -165,6 +169,7 @@ async function play(m, s) {
 	await hideHud();
 	loadAssets(assets).then(startGame)
 }
+loadAssets(assets)
 
 const hud = $("#hud");
 const ss = $("#start-screen");
@@ -174,14 +179,41 @@ const hideHud = async () => {
 	await wait(1000);
 	hud.style.display = "none";
 }
-
+/*
+const huds = $$("#hud > [state=active]")
 function showLvl () {
-	ss.setAttribute("state", "");
-	lvl.setAttribute("state", "active");
+	$$("#hud > [state=active]").forEach(t => t.setAttribute("state", ""))
+	$("#lvl").setAttribute("state", "active");
 }
 
-$("#play").addEventListener("click", showLvl);
+function home () {
+	huds.forEach(t => t.setAttribute("state", ""))
+	ss.setAttribute("state", "active");
+}
+
+function gameOverScreen() {
+	huds.forEach(t => t.setAttribute("state", ""))
+	over.setAttribute("state", "active");
+}
+*/
+
+function setHud ( id , cb ) {
+	$$("#hud > [state=active]").forEach(t => t.setAttribute("state", ""))
+	$(id).setAttribute("state", "active");
+	cb && cb()
+}
+
+function rs () {
+	$("#scoreboard").style.display = "none";
+	$("#scoreboard").textContent = 0;
+}
+
+$("#play").addEventListener("click", () => setHud("#lvl"));
+
 $("#easy").addEventListener("click", ()=>play(2000, 1));
 $("#medium").addEventListener("click", ()=>play(1500, 0.8));
 $("#hard").addEventListener("click", ()=>play(1000,0.5));
 $("#asian").addEventListener("click", ()=>play(200,0.15));
+
+$("#restart").addEventListener("click",  () => setHud("#lvl", rs));
+$("#home").addEventListener("click",  () => setHud("#start-screen", rs));
