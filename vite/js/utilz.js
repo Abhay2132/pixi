@@ -89,3 +89,7 @@ export const loadAssets = async (assets) => {
 	for(let asset of assets)
 		await Assets.load(asset);
 }
+
+export const inR = (a,x,y) => (a > x && a < y)
+
+export const fc = () => parseInt(Math.random()*1000)%2===0

@@ -1,3 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Julee&display=swap');
+
+@font-face {
+	font-family: "scorefont";
+	src : url(fonts/Vintage.ttf) format('truetype');
+}
+* {
+	font-family: 'scorefont', 'Julee';
+}
+
 body {
 	margin: 0;
 }
@@ -24,19 +34,18 @@ body {
 	background: rgba(0,0,0,0.9);
 	margin: 0;
 	padding: 0;
-	display: flex;
-	justify-content: center;
-	align-items: center ;
 }
 
 .hud-panel , .hud-dialog {
-	display: none;
-}
-
-#hud > *[state="active"] {
+	transition: 400ms ease-out 200ms;
 	--h : 400px;
 	height: var(--h);
 	width: 300px;
+	position: fixed;
+	top: 0;
+	left: calc(50% - 150px);
+	top: calc(50% - var(--h)/2 );
+	transform: scale(0);
 	background: #ffe;
 	border-radius: 5px;
 	overflow: hidden;
@@ -45,19 +54,22 @@ body {
 	grid-template-rows: auto auto;
 }
 
+#hud > *[state="active"] {
+	transform: scale(1);
+}
+
 .screen-logo {
 	position: relative;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background: 0;
 }
 
-.screen-logo > * {
+.screen-logo > img {
 	aspect-ratio: 1/1;
 	width: 50%;
-	background: red;
 	border-radius: 10%;
+	background: red;
 }
 
 .screen-options {
@@ -78,7 +90,6 @@ body {
 	box-shadow: 0 4px 0 #000;
 	color: #ffe;
 	font-weight: 600;
-	font-family: sans;
 	font-size: 1.2rem;
 	width: 180px;
 	background: #333;
@@ -103,11 +114,10 @@ body {
 	box-sizing: border-box;
 	line-height: 40px;
 	padding: 0 10px;
-	font-family: sans;
 	font-weight: 670;
 	margin: 0 5px;
-	border-bottom: 1px solid #fff;
-	color: #fff;
+	border-bottom: 1px solid #000;
+	color: #333;
 }
 
 #lvl button {
@@ -116,4 +126,25 @@ body {
 	background: #333;
 	font-size: 1rem;
 	color: #eee;
+}
+
+#lvl img {
+	padding: 10px;
+	background: green;
+}
+
+#scoreboard {
+	--w: 70px;
+	position: fixed;
+	top: 10px;
+	width: var(--w);
+	text-align: center;
+	font-size: 25px;
+	left: calc(50% - var(--w) / 2);
+	border-radius: 10px;
+	font-weight: 600;
+	padding: 10px 5px;
+	background: red;
+	color: #fff;
+	display: none;
 }

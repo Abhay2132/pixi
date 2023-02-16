@@ -1,5 +1,5 @@
-import Ball from "./ball.js";
-import {log, rand } from "../utilz.js";
+import Box from "./box.js";
+import {fc, log, rand } from "../utilz.js";
 import { AnimatedSprite, Texture, Assets } from 'pixi.js';
 
 var mob_run = []
@@ -7,36 +7,34 @@ for(let i=0; i<20;i++) mob_run.push(`sprites/girl/Run (${i+1}).png`)
 const textureArray = [];
 mob_run.forEach(texture => textureArray.push(Texture.from(texture)))
 
-export default class Mob extends Ball {
+export default class Mob extends Box {
 	constructor(opt) {
+		opt.h = 40;
+		opt.w = 30;
 		//opt.showShape = true
 		super(opt);
 		this.isCollided = opt?.isCollided
 		this.onCollide = opt?.onCollide
 		this.setup()
 		.then(() => {this.isReady = 1});
-		/*
-		let maxDist = Math.sqrt(this.maxX * this.maxX + this.maxY * this.maxY)
-		let time = maxDist / this.speed * 1000
-		setTimeout(() => this.kill(this), time);*/
+		
+		this.isReady = 1;
 	}
 
 	animate(tick) {
 		if(!this.isReady) return;
 		//(this.moving ? this.p.play() : this.idle())
+		if(this.o.dev) this.log(parseInt(this.ix),parseInt(this.iy))
 		if (
-			this.x < this.minX - 4 * this.r ||
-			this.x > this.maxX + 4 * this.r ||
-			this.y < this.minY - 4 * this.r ||
-			this.y > this.maxY + 4 * this.r
-		) {
-			//log("Killed")
-			return this.kill(this);
-		}
+			this.x < 0 ||
+			this.x > app.view.width ||
+			this.y < 0 ||
+			this.y > app.view.height
+		) return this.kill(this);
 		
 		let { x, y } = this
 		if (!(this.dx && this.y)) {
-			let [X, Y] = this.loc;
+			let {x:X, y:Y} = this.loc;
 			
 			const ds = this.speed * tick * 0.001;
 			let a = Math.atan((y - Y) / (X - x)).toFixed(2) || 0;
@@ -53,12 +51,12 @@ export default class Mob extends Ball {
 
 	static randPos(minX, maxX, minY, maxY) {
 		let x, y;
-		let ver = parseInt(Math.random() * 1000) % 2 == 0;
+		let ver = fc()
 		if (ver) {
-			y = parseInt(Math.random() * 1000) % 2 == 0 ? minY : maxY;
+			y = fc() ? minY : maxY;
 			x = rand(minX, maxX);
 		} else {
-			x = parseInt(Math.random() * 1000) % 2 == 0 ? minY : maxY;
+			x = fc() ? minY : maxY;
 			y = rand(minX, maxX);
 		}
 
@@ -75,10 +73,10 @@ export default class Mob extends Ball {
 		p.height = 50
 		p.width = 50
 		
-		super.scale.x = this.x < this.loc[0] ? 1 : -1;
+		super.scale.x = this.x < this.loc.x ? 1 : -1;
 		p.play()
 		p.x = -30;
-		p.y = -25;
+		p.y = -30;
 		p.animationSpeed = 0.6;
 		this.addChild(p)
 		this.p = p;
