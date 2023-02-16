@@ -1,4 +1,4 @@
-import { TextStyle, Text } from "pixi.js";
+import { TextStyle, Text ,Assets } from "pixi.js";
 
 export const $ = (a) => document.querySelector(a);
 export const rand = (a, z) => Math.floor(Math.random() * (z - a+1) + a);
@@ -19,8 +19,8 @@ export const config = {
 };
 
 export function resize(cb) {
-	const x = window.innerHeight;
-	const y = window.innerWidth;
+	const y = window.innerHeight;
+	const x = window.innerWidth;
 	let s = document.documentElement.style;
 	s.setProperty("--wh", y + "px");
 	s.setProperty("--ww", x + "px");
@@ -84,3 +84,8 @@ export const requestAnimationFrame = window.requestAnimationFrame || window.mozR
                             window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
 export const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
+
+export const loadAssets = async (assets) => {
+	for(let asset of assets)
+		await Assets.load(asset);
+}

@@ -3,7 +3,7 @@ import { log, clamp } from "../utilz.js";
 export default class Scene extends Container {
 	constructor(opt) {
 		super();
-
+		this.o = opt
 		const radius = 20;
 		const bdr = 3;
 		this.r = radius + bdr - 2;
@@ -53,6 +53,7 @@ export default class Scene extends Container {
 	}
 	
 	setXYmm (opt) {
+		if(!opt) opt = this.o
 		this.maxX = opt?.maxX || app.view.width - this.r;
 		this.minX = opt?.minX || this.r;
 		this.maxY = opt?.maxY || app.view.height - this.r;

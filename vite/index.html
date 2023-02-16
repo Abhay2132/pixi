@@ -4,11 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pixi.JS App</title>
-    <link rel="stylesheet" href="css/styles.css" />
+    
+    <script type="module" crossorigin src="js/main.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
-    <div id="app"></div>
-    <a class="d-no"></a>
+	<div id="game"></div>
+	<div id="hud">
+		<div id="start-screen" class="hud-panel" state = "active">
+			<div class="screen-logo">
+				<img src="" />
+			</div>
+			<div class ="screen-options">
+				<button id='play'>PLAY</button>
+				<button id='hs'>HIGH SCORE</button>
+			</div>
+		</div>
+		
+		<div id="lvl" class="hud-dialog"> 
+			<div class="screen-title">Select the Level </div>
+			<div class="screen-logo">
+				<img src="" />
+			</div>
+			<div class ="screen-options">
+				<button id='easy'>EASY</button>
+				<button id='medium'>MEDIUM</button>
+				<button id='hard'>HARD</button>
+				<button id='asian'>ASIAN</button>
+			</div>
+		</div>
+	</div>
   </body>
-	<script type="module" src="js/main.js"></script>
+	
 </html>

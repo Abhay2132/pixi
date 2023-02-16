@@ -1,6 +1,6 @@
 import Ball from "./ball.js";
 import {log, rand } from "../utilz.js";
-import { AnimatedSprite, Texture } from 'pixi.js';
+import { AnimatedSprite, Texture, Assets } from 'pixi.js';
 
 var mob_run = []
 for(let i=0; i<20;i++) mob_run.push(`sprites/girl/Run (${i+1}).png`)
@@ -14,6 +14,7 @@ export default class Mob extends Ball {
 		this.isCollided = opt?.isCollided
 		this.onCollide = opt?.onCollide
 		this.setup()
+		.then(() => {this.isReady = 1});
 		/*
 		let maxDist = Math.sqrt(this.maxX * this.maxX + this.maxY * this.maxY)
 		let time = maxDist / this.speed * 1000
@@ -21,6 +22,7 @@ export default class Mob extends Ball {
 	}
 
 	animate(tick) {
+		if(!this.isReady) return;
 		//(this.moving ? this.p.play() : this.idle())
 		if (
 			this.x < this.minX - 4 * this.r ||
@@ -28,7 +30,7 @@ export default class Mob extends Ball {
 			this.y < this.minY - 4 * this.r ||
 			this.y > this.maxY + 4 * this.r
 		) {
-			log("Killed")
+			//log("Killed")
 			return this.kill(this);
 		}
 		
@@ -63,8 +65,13 @@ export default class Mob extends Ball {
 		return { x, y };
 	}
 	
-	setup() {
-		const p = new AnimatedSprite(textureArray);
+	async setup() {
+		const ta = []
+		for(let i=0; i<20;i++){ 
+			let  t = await Assets.load(`sprites/girl/Run (${i+1}).png`); 
+			ta.push(t)
+		}
+		const p = new AnimatedSprite(ta);
 		p.height = 50
 		p.width = 50
 		
@@ -80,6 +87,14 @@ export default class Mob extends Ball {
 	idle () {
 		this.p.currentFrame = 0;
 		this.p.stop()
+		this.speed =0;
+		this.dy =0
+		this.dx =0;
+	}
+	
+	resume(){
+		this.p.play()
+		this.speed = this.o.speed
 	}
 }
 
