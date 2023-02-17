@@ -50,7 +50,7 @@ const styly = new TextStyle({
 	fontFamily: "sans",
 });
 const texty = new Text("Logs", styly); // Text supports unicode!
-texty.text = "Logs";
+texty.text = "";
 texty.backgroundColor = 0x000000;
 texty.position.set(10, 10);
 
