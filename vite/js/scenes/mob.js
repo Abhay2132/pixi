@@ -25,12 +25,7 @@ export default class Mob extends Box {
 		if(!this.isReady) return;
 		//(this.moving ? this.p.play() : this.idle())
 		if(this.o.dev) this.log(parseInt(this.ix),parseInt(this.iy))
-		if (
-			this.x < 0 ||
-			this.x > app.view.width ||
-			this.y < 0 ||
-			this.y > app.view.height
-		) return this.kill(this);
+		if (this.leaved()) return this.kill(this);
 		
 		let { x, y } = this
 		if (!(this.dx && this.y)) {
@@ -88,6 +83,16 @@ export default class Mob extends Box {
 		this.speed =0;
 		this.dy =0
 		this.dx =0;
+	}
+	
+	leaved () {
+		if(
+			this.x < -this.o.w*2 || 
+			this.x > app.view.width+this.o.w*2 || 
+			this.y < -this.o.h*2 || 
+			this.y > app.view.height+this.o.h*2
+		) return true;
+		return false;
 	}
 	
 	resume(){

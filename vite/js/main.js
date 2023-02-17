@@ -5,8 +5,10 @@ import {
 	Ticker,
 	Container,
 	Text,
+	Assets
 } from "pixi.js";
-import {$,$$,inR, loadAssets, requestAnimationFrame, cancelAnimationFrame, wait, getLogger, config, log, clamp, resize, save, rand } from "./utilz.js";
+import { Sound } from "@pixi/sound";
+import {$,$$,inR, requestAnimationFrame, cancelAnimationFrame, wait, getLogger, config, log, clamp, resize, save, rand } from "./utilz.js";
 import assets from "./asset.js";
 var Player, Mob;
 
@@ -37,10 +39,11 @@ var lastMobSpawn = 0;
 const gameLoop = requestAnimationFrame(function tick(t) {
 	requestAnimationFrame(tick);
 	let dt = t - te;
-	clog(
+	location.href.startsWith("http://localhost") && clog(
 		`fps : ${parseInt(te ? 1000 / dt : 0)}`,
-		`score : ${score.toFixed(2)}`,
-		`mobs : ${mobs.size}`
+		`mi : ${mi.toFixed(2)}`,
+		`mobs : ${mobs.size}`,
+		`ds : ${ds}`
 	);
 	te = t;
 	if(pause) return;
@@ -49,6 +52,8 @@ const gameLoop = requestAnimationFrame(function tick(t) {
 	lastMobSpawn += dt;
 	if(lastMobSpawn > mi) mobSpawner();
 	setScore(score);
+	if(mi > 300) mi += -0.2
+	ds = mi / 2000;
 });
 
 function move(e) {
@@ -60,11 +65,11 @@ function move(e) {
 var go = false; // game over 
 var mobsOff = 1;
 const mobs = new Map();
-//const getMobTimer = () => {setInterval(() => {
+
 const mobSpawner = () => {
 	lastMobSpawn=0;
 	if(mobsOff) return;
-	const { x, y } = Mob.randPos(0, app.view.width, 0, app.view.height);
+	const { x, y } = Mob.randPos(-p.o.w, app.view.width, -p.o.h, app.view.height);
 	const mob = new Mob({x,y,clr: 0xff0000,
 		showShape: false,
 		speed : rand(p.speed*0.4, p.speed*0.7),
@@ -74,14 +79,6 @@ const mobSpawner = () => {
 			score += ds
 		},
 		isCollided(me){
-			/*
-			let {x:x1, y:y1} = p;
-			let {x:x2, y:y2} = me;
-			let Y = y2-y1 , X = x2 - x1;
-			let s = Math.sqrt(Y*Y + X*X)
-			let ds = p.r + me.r;
-			if(s < ds) return true;
-			*/
 			let {x,y} = p
 			let {w,h} = p.o
 			let {x:X, y:Y} = me
@@ -97,15 +94,12 @@ const mobSpawner = () => {
 			let Y1 = Y-H/2
 			let Y2 = Y+H/2
 			
-			//me.log(x,y,w,h,X,Y,W,H)
-			//me.log(x1, y1, x1, y2, X1, Y1, X2, Y2)
 			if((inR(x1, X1,X2) || inR(x2, X1,X2)) &&
 				(inR(y1, Y1,Y2) || inR(y2, Y1,Y2)))
 				return 1
 			return 0
 		},
 		onCollide(me){
-			//pause = true;
 			gameOver(me);
 			},
 		loc : {x : p.x, y:p.y}
@@ -113,10 +107,13 @@ const mobSpawner = () => {
 	mobs.set(mob.uid, mob);
 	root.addChild(mob);
 }//, mi);
-
+var uwu
 var mobTimer// = getMobTimer()
 
 async function gameOver (mob) {
+	bgm.stop();
+	if(!uwu) uwu = await Sound.from((await Assets.load("audio/uwu.mp3")))
+	uwu.play()
 	pause = true;
 	//clearInterval(mobTimer);
 	mobsOff = 0;
@@ -124,78 +121,66 @@ async function gameOver (mob) {
 		mob.idle()
 	});
 	p.idle()
-	//setTimeout(startGame, 1000);
+	
 	setHud("#over")
 	hud.style.display = "block";
 	await wait(1000);
 	hud.style.opacity = 1;
 }
 const over = $("#over");
-function startGame () {
-		
-		if(!Mob) {
-			return import("./scenes/mob.js")
-			.then(i => {
-				Mob = i.default;
-				startGame ()
-			})
-		}
+var bgm;
+async function startGame () {
 	if(!p){
-		if(!Player) {
-			return import("./scenes/player.js")
-			.then(i => {
-				Player = i.default;
-				startGame ()
-			})
-		}
 		p = new Player({ showShape: 0,clr: 0x22aa15 })
 		root.addChild(p);
 	}
 	
 	mobs.forEach(mob => mob.kill(mob));
 	pause = false;
-	//mobTimer = getMobTimer();
+	
 	mobsOff = 0;
 	score = 0;
 	p.loc.x = app.view.width/2 //rand(30, app.view.width-40)
 	p.loc.y = app.view.height/2//rand(30,app.view.height-40)
 	sb.style.display = "block";
+	
+	bgm.play();
 }
 
 //startGame()
 async function play(m, s) {
 	mi = m;
-	ds =s
 	await hideHud();
-	loadAssets(assets).then(startGame)
+	startGame();
 }
-loadAssets(assets)
+
+async function loadAssets(cb){
+	const l = assets.length + 2;
+	for(let i=0; i<assets.length; i++){
+		let asset = assets[i];
+		await Assets.load(asset);
+		cb && cb(i+1,l)
+	}
+	Player = (await import("./scenes/player.js")).default;
+	cb && cb(l-1,l)
+	Mob = (await import("./scenes/mob.js")).default;
+	cb && cb(l,l);
+	bgm = await Sound.from((await Assets.load("audio/bgm.mp3")))
+};
+
+loadAssets( (i,l) => {
+	$("#loading").setAttribute("value", i/l*100);
+	if(l ==i)  setTimeout(() => $("#start-screen").setAttribute("ss-state", "loaded"), 200);
+})
 
 const hud = $("#hud");
 const ss = $("#start-screen");
 const lvl = $("#lvl");
 const hideHud = async () => {
 	hud.style.opacity = 0;
-	await wait(1000);
+	await wait(500);
 	hud.style.display = "none";
 }
-/*
-const huds = $$("#hud > [state=active]")
-function showLvl () {
-	$$("#hud > [state=active]").forEach(t => t.setAttribute("state", ""))
-	$("#lvl").setAttribute("state", "active");
-}
-
-function home () {
-	huds.forEach(t => t.setAttribute("state", ""))
-	ss.setAttribute("state", "active");
-}
-
-function gameOverScreen() {
-	huds.forEach(t => t.setAttribute("state", ""))
-	over.setAttribute("state", "active");
-}
-*/
 
 function setHud ( id , cb ) {
 	$$("#hud > [state=active]").forEach(t => t.setAttribute("state", ""))
@@ -213,7 +198,7 @@ $("#play").addEventListener("click", () => setHud("#lvl"));
 $("#easy").addEventListener("click", ()=>play(2000, 1));
 $("#medium").addEventListener("click", ()=>play(1500, 0.8));
 $("#hard").addEventListener("click", ()=>play(1000,0.5));
-$("#asian").addEventListener("click", ()=>play(200,0.15));
+$("#asian").addEventListener("click", ()=>play(400,0.15));
 
 $("#restart").addEventListener("click",  () => setHud("#lvl", rs));
 $("#home").addEventListener("click",  () => setHud("#start-screen", rs));

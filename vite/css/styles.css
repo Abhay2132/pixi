@@ -22,11 +22,11 @@ body {
 }
 
 #hud {
-	transition: 1s;
+	transition: 500ms;
 	position: absolute;
 	top: 0; left: 0;
-	height: calc(var(--wh));
-	width: var(--ww);
+	height: var(--wh, 100vh);
+	width: var(--ww, 100%);
 	background: rgba(0,0,0,0.9);
 	margin: 0;
 	padding: 0;
@@ -47,7 +47,7 @@ body {
 	overflow: hidden;
 	--row : calc(var(--h) / 2);
 	display: grid !important;
-	grid-template-rows: auto auto;
+	grid-template-rows: 60% 40%;
 	opacity: 0;
 }
 
@@ -61,6 +61,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	background: 0;
 }
 
 .screen-logo > img {
@@ -76,6 +77,7 @@ body {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	transition: 200ms;
 }
 
 .screen-options > button {
@@ -145,11 +147,51 @@ body {
 	background: red;
 	color: #fff;
 	display: none;
+	border: 2px solid #fff;
+	opacity: 0.5;
 }
 
 #game-name {
 	position: absolute;
-	bottom: -10px;
+	bottom: 0;
 	margin: 0;
 	padding:0;
+}
+
+[ss-state="loading"] > .screen-options {
+	display: none;
+}
+
+[ss-state="loaded"] > #loader {
+	display: none;
+}
+
+#loader {
+	background: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	grid-gap: 10px;
+	flex-direction: column;
+}
+
+
+::-moz-progress-bar 
+{
+	transition: 100ms;
+}
+
+#spinner {
+	height: 60px;
+	width:60px;
+	border: 8px solid rgba(0,0,0,0.2);
+	box-sizing: border-box;
+	border-top-color: #a2e;
+	border-radius: 50%;
+	animation: rotate 1s linear 0s infinite;
+}
+
+@keyframes rotate {
+	from { transform: rotate(0deg); } 
+	to { transform: rotate(360deg); } 
 }

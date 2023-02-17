@@ -10,16 +10,6 @@
   <body>
 	<div id="game"></div>
 	<div id="hud">
-		<div id="start-screen" class="hud-panel" state = "active">
-			<div class="screen-logo">
-				<img src="sprites/run/Run (3).png" />
-				<h1 id="game-name">Sigma Boy</h1>
-			</div>
-			<div class ="screen-options">
-				<button id='play'>PLAY</button>
-				<button id='hs'>HIGH SCORE</button>
-			</div>
-		</div>
 		
 		<div id="lvl" class="hud-dialog"> 
 			<div class="screen-title">Select the Level </div>
@@ -44,6 +34,22 @@
 				<button id='home'>Home</button>
 			</div>
 		</div>
+		
+		<div id="start-screen" ss-state="loading" class="hud-panel" state = "active">
+			<div class="screen-logo">
+				<img src="sprites/run/Run (3).png" />
+				<h1 id="game-name">Sigma Boy</h1>
+			</div>
+			<div class ="screen-options">
+				<button id='play'>PLAY</button>
+				<button id='hs'>HIGH SCORE</button>
+			</div>
+			<div id="loader">
+				<div> Loading Assets ... </div>
+				<progress id="loading" max="100" value="1"></progress>
+			</div>
+		</div>
+		
 	</div>
 		<div id="scoreboard">
 		</div>

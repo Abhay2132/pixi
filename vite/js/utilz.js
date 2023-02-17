@@ -86,9 +86,12 @@ export const requestAnimationFrame = window.requestAnimationFrame || window.mozR
 
 export const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
 
-export const loadAssets = async (assets) => {
-	for(let asset of assets)
+export const loadAssets = async (assets, cb) => {
+	for(let i=0; i<assets.length; i++){
+		let asset = assets[i];
 		await Assets.load(asset);
+		cb && cb(i+1, assets.length);
+	}
 }
 
 export const inR = (a,x,y) => (a > x && a < y)
